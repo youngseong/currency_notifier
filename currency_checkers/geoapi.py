@@ -24,12 +24,12 @@ def check_currency_rate(api_key: str, **kwargs):
 
 
 if __name__ == '__main__':
-    # FIXME: ImportError: attempted relative import with no known parent package
-    from ..config_loader.config_loader import load_config
-    from pathlib import Path
+    from argparse import ArgumentParser
 
-    config_dir = Path(__file__).parent.parent / 'config'
-    config = load_config(config_dir / 'base.json')
+    arg_parser = ArgumentParser()
+    arg_parser.add_argument('api_key', type=str)
 
-    rate_for_amount = check_currency_rate(**config['currency'])
+    args = arg_parser.parse_args()
+
+    rate_for_amount = check_currency_rate(args.api_key)
     print(rate_for_amount)
