@@ -8,11 +8,15 @@ from triggers.threshold_trigger import threshold_trigger
 from notifiers.telegram_notifier import TelegramNotifier
 
 
-def generate_message(amount:float, good:bool, trigger:dict):
+def generate_message(source_amount:float,
+                     target_amount:float,
+                     good:bool,
+                     trigger:dict):
     lines = [
         datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
-        f'Suggestion: {str(good)}',
-        f'Expected Target Amount: {amount}',
+        'Suggestion: ' + 'Exchange' if good else 'Wait',
+        f'Expected Target Amount: {target_amount}',
+        f'Source Amount: {source_amount}',
         f'Trigger: {trigger}'
     ]
     return '\n'.join(lines)
@@ -25,7 +29,8 @@ async def main():
     expected_amount = check_currency_rate(**config['currency'])
     good = threshold_trigger(expected_amount, **config['trigger'])
 
-    msg = generate_message(expected_amount, good, config['trigger'])
+    source_amount = config['currency'].get('amount', 1)
+    msg = generate_message(source_amount, expected_amount, good, config['trigger'])
 
     notifier = TelegramNotifier(**config['notification'])
     await notifier.notify(msg)
