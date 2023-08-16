@@ -9,6 +9,6 @@
   "trigger": {
     "method": "threshold",
     "threshold": 730,
-    "comparator": ">"
+    "comparator": "gt"
   }
 }
