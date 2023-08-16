@@ -1,0 +1,9 @@
+{
+  "currency": {
+    "api": "geoapi",
+    "api_key": "GEO_API_KEY",
+    "from": "KRW",
+    "to": "EUR",
+    "amount": 1000000
+  }
+}
