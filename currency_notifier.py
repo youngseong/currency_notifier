@@ -36,5 +36,9 @@ async def main():
     await notifier.notify(msg)
 
 
+def lambda_handler(event, context):
+    asyncio.run(main())
+
+
 if __name__ == '__main__':
     asyncio.run(main())
