@@ -4,7 +4,7 @@ from typing import List
 
 
 class TelegramNotifier(object):
-    def __init__(self, token: str, chat_ids: List[int]):
+    def __init__(self, token: str, chat_ids: List[int], **kwargs):
         self._bot = telegram.Bot(token)
 
         self._chat_ids = chat_ids
