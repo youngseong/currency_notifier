@@ -2,7 +2,7 @@ import requests
 
 
 # TODO: generalize the function
-def check_currency_rate(api_key: str, source_currency: str, target_currency: str, **kwargs):
+def check_currency_rate(api_key: str, source_currency: str = 'KRW', target_currency: str = 'EUR', **kwargs):
     target_currency = kwargs.get('target_currency', 'EUR')
 
     parameters = {
