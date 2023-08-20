@@ -14,7 +14,7 @@ def generate_message(source_amount:float,
                      trigger:dict):
     lines = [
         datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
-        'Suggestion: ' + 'Exchange' if good else 'Wait',
+        'Suggestion: ' + ('Exchange' if good else 'Wait'),
         f'Expected Target Amount: {target_amount}',
         f'Source Amount: {source_amount}',
         f'Trigger: {trigger}'
