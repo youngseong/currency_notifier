@@ -1,17 +1,17 @@
 # This workflow will install Python dependencies, run tests and lint with a single version of Python
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
 
-name: Notify krw2eur rate hourly between 9am and 5pm
+name: Notify krw2eur rate hourly between 9am and 6pm
 
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "0 9-18 * * *"
 
 permissions:
   contents: read
 
 jobs:
-  build:
+  test_schedule:
     runs-on: ubuntu-latest
     environment: Automation
 
