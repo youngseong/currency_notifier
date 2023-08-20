@@ -16,6 +16,7 @@ def check_currency_rate(api_key: str, source_currency: str = 'KRW', target_curre
     url = 'https://api.getgeoapi.com/v2/currency/convert'
 
     response = requests.get(url, parameters)
+    print(response.json())
 
     amount_in_target_currency = float(
         response.json()['rates'][target_currency]['rate_for_amount'])

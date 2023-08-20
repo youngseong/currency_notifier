@@ -13,6 +13,6 @@
   },
   "notification": {
     "messenger": "telegram",
-    "token": "TELEGRAM_ACCESS_TOKEN"
+    "token": "TELEGRAM_BOT_TOKEN"
   }
 }
