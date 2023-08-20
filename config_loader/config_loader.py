@@ -1,22 +1,27 @@
-import collections.abc
 import json
 from pathlib import Path
+import os
 
 
-def load_config(config_path: Path, *args) -> dict:
+def load_config(config_path: Path, replace_secrets_with_env: bool=True) -> dict:
+    config = {}
+
     with open(config_path) as fp:
         config = json.load(fp)
-        if args:
-            # https://stackoverflow.com/a/3233356
-            def update(d: dict, u: dict):
-                for k, v in u.items():
-                    if isinstance(v, collections.abc.Mapping):
-                        d[k] = update(d.get(k, {}), v)
-                    else:
-                        d[k] = v
-                return d
 
-            update(config, load_config(*args))
+    def replace_secrets(table: dict, secet_keywords: list):
+        for k, v in table.items():
+            if isinstance(v, dict):
+                replace_secrets(v, secet_keywords)
+            elif isinstance(v, str):
+                for kwd in secet_keywords:
+                    if kwd in k and v in os.environ:
+                        table[k] = os.environ[v]
+                        break
+
+    if replace_secrets_with_env:
+        replace_secrets(config, ['api_key', 'token'])
+
     return config
 
 
