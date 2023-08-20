@@ -2,13 +2,13 @@ import requests
 
 
 # TODO: generalize the function
-def check_currency_rate(api_key: str, **kwargs):
+def check_currency_rate(api_key: str, source_currency: str, target_currency: str, **kwargs):
     target_currency = kwargs.get('target_currency', 'EUR')
 
     parameters = {
         'api_key': api_key,
-        'from': kwargs.get('source_currency', 'KRW'),
-        'to': kwargs.get('target_currency', 'EUR'),
+        'from': source_currency,
+        'to': target_currency,
         'amount': kwargs.get('amount', 1),
         'format': 'json'
     }
