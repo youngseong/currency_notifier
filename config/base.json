@@ -10,5 +10,10 @@
     "method": "threshold",
     "threshold": 730,
     "comparator": "gt"
+  },
+  "notification": {
+    "messenger": "telegram",
+    "token": "TELEGRAM_ACCESS_TOKEN",
+    "chat_ids": []
   }
 }
