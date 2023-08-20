@@ -14,6 +14,9 @@ permissions:
 
 jobs:
   build:
+    env:
+      GEO_API_KEY: ${{secrets.GEO_API_KEY}}
+      TELEGRAM_BOT_TOKEN: ${{secrets.TELEGRAM_BOT_TOKEN}}
 
     runs-on: ubuntu-latest
 
