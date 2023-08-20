@@ -5,7 +5,7 @@ name: Notify krw2eur rate hourly between 9am and 5pm
 
 on:
   schedule:
-    - cron: "0 9-17 * * *"
+    - cron: "*/5 * * * *"
 
 permissions:
   contents: read
