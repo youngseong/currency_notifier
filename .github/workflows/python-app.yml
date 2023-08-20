@@ -14,9 +14,6 @@ permissions:
 
 jobs:
   build:
-    env:
-      GEO_API_KEY: ${{secrets.GEO_API_KEY}}
-      TELEGRAM_BOT_TOKEN: ${{secrets.TELEGRAM_BOT_TOKEN}}
 
     runs-on: ubuntu-latest
 
@@ -38,5 +35,8 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Run
+      env:
+        GEO_API_KEY: '${{secrets.GEO_API_KEY}}'
+        TELEGRAM_BOT_TOKEN: '${{secrets.TELEGRAM_BOT_TOKEN}}'
       run: |
         python3 currency_notifier.py
