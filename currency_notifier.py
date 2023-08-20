@@ -33,7 +33,7 @@ async def main():
     msg = generate_message(source_amount, expected_amount, good, config['trigger'])
 
     notifier = TelegramNotifier(**config['notification'])
-    await notifier.notify(msg)
+    await notifier.notify_all(msg)
 
 
 def lambda_handler(event, context):

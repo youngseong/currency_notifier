@@ -4,10 +4,9 @@ from typing import List
 
 
 class TelegramNotifier(object):
-    def __init__(self, token: str, chat_ids: List[int], **kwargs):
+    def __init__(self, token: str, **kwargs):
         self._bot = telegram.Bot(token)
-
-        self._chat_ids = chat_ids
+        self._chat_ids = []
 
     @property
     def chat_ids(self):
@@ -21,7 +20,10 @@ class TelegramNotifier(object):
         chat_ids = [u.effective_user.id for u in updates if u.effective_user]
         return chat_ids
 
-    async def notify(self, text: str):
+    async def notify_all(self, text: str):
+        if not self._chat_ids:
+            await self.update_chat_ids()
+
         await asyncio.gather(*[self.send_message(id, text) for id in self._chat_ids])
 
     async def send_message(self, chat_id: int, text: str):
