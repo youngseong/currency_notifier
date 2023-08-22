@@ -14,6 +14,6 @@
   "notification": {
     "messenger": "telegram",
     "token": "TELEGRAM_BOT_TOKEN",
-    "chat_ids": [6144059945, 6023918749]
+    "chat_ids": [6144059945, 6023918749] // is this the right place?
   }
 }
