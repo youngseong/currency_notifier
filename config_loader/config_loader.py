@@ -1,13 +1,19 @@
 import json
 from pathlib import Path
 import os
+import re
 
 
-def load_config(config_path: Path, replace_secrets_with_env: bool=True) -> dict:
-    config = {}
+def load_json(json_path: Path):
+    def remove_comments(content: str):
+        return re.sub("//.*\n", "", content)
 
-    with open(config_path) as fp:
-        config = json.load(fp)
+    with open(json_path) as fp:
+        return json.loads(remove_comments(fp.read()))
+
+
+def load_config(config_path: Path, replace_secrets_with_env: bool = True):
+    config = load_json(config_path)
 
     def replace_secrets(table: dict, secet_keywords: list):
         for k, v in table.items():
@@ -27,5 +33,5 @@ def load_config(config_path: Path, replace_secrets_with_env: bool=True) -> dict:
 
 if __name__ == '__main__':
     config_dir = Path(__file__).parent.parent / 'config'
-    cfg = load_config(config_dir / 'base.json')
+    cfg = load_config(config_dir / 'config.json')
     print(cfg)
