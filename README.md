@@ -2,6 +2,8 @@
 
 It alerts the currency exchange rate via a messaging app (only Telegram Bot is supported currently.)
 
+<img src="images/output.png" width=300/>
+
 ## Prerequisites
 
 - Python 3.8+
@@ -11,4 +13,3 @@ It alerts the currency exchange rate via a messaging app (only Telegram Bot is s
 - API Credentials
   - [Geo API Key](https://currency.getgeoapi.com/) for checking the currency rate
   - Telegram Access Token for notification
-
