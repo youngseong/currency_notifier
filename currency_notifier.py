@@ -27,7 +27,7 @@ def generate_message(dst_amount: float,
 
 async def main():
     config_dir = Path(__file__).parent / 'config'
-    config = load_config(config_dir / 'base.json')
+    config = load_config(config_dir / 'config.json')
 
     expected_amount = check_currency_rate(**config['currency'])
     good = threshold_trigger(expected_amount, **config['trigger'])
