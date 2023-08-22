@@ -13,6 +13,7 @@
   },
   "notification": {
     "messenger": "telegram",
-    "token": "TELEGRAM_BOT_TOKEN"
+    "token": "TELEGRAM_BOT_TOKEN",
+    "chat_ids": []
   }
 }
