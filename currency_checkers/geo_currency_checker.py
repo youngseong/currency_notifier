@@ -1,20 +1,21 @@
-from currency_checker import CurrencyChecker
+from .currency_checker import CurrencyChecker
 from datetime import date
 from typing import List, Optional
 import requests
 
 
 class GeoCurrencyChecker(CurrencyChecker):
-    def __init__(self, geo_api_key: str, base: str, currency: str, **kwargs):
+    def __init__(self, api_key: str, base: str, currency: str, **kwargs):
         super().__init__(base, currency, **kwargs)
 
-        self._api_key = geo_api_key
+        self._api_key = api_key
 
     def get_exchange_rate(self, date: Optional[date] = None) -> float:
         parameters = {
             'api_key': self._api_key,
             'from': self._base,
             'to': self._currency,
+            # FIXME: geoapi rounds up the exchange rate with a unit amount
             'amount': 1,
             'format': 'json'
         }
