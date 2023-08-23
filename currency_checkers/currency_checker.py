@@ -1,10 +1,10 @@
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from datetime import date
 from typing import List, Optional
 
 
-class CurrencyChecker:
-    def __init__(self, base: str, currency: str) -> None:
+class CurrencyChecker(ABC):
+    def __init__(self, base: str, currency: str, **kwargs) -> None:
         self._base = base
         self._currency = currency
 
