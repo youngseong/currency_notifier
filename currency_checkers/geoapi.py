@@ -29,10 +29,9 @@ class GeoCurrencyChecker(CurrencyChecker):
         response = requests.get(url, parameters)
         response.raise_for_status()
 
-        amount_in_target_currency = float(
-            response.json()['rates'][self._currency]['rate_for_amount'])
+        rate = float(response.json()['rates'][self._currency]['rate'])
 
-        return amount_in_target_currency
+        return rate
 
     def get_time_series(self, start: date, end: date) -> List[float]:
         assert False, 'The API is not available!'

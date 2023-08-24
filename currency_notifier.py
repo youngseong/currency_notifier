@@ -3,7 +3,7 @@ from datetime import datetime
 from pathlib import Path
 
 from config_loader.config_loader import load_config
-from currency_checkers.geo_currency_checker import GeoCurrencyChecker
+from currency_checkers import init_currency_checker
 from triggers.threshold_trigger import threshold_trigger
 from notifiers.telegram_notifier import TelegramNotifier
 
@@ -29,7 +29,7 @@ async def main():
     config_dir = Path(__file__).parent / 'config'
     config = load_config(config_dir / 'config.json')
 
-    currency_checker = GeoCurrencyChecker(**config['currency'])
+    currency_checker = init_currency_checker(**config['currency'])
     expected_amount = currency_checker.get_exchange_rate() * config['currency']['amount']
 
     good = threshold_trigger(expected_amount, **config['trigger'])
