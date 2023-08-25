@@ -2,8 +2,8 @@
   "currency": {
     "api": "geoapi",
     "api_key": "GEO_API_KEY",
-    "from": "KRW",
-    "to": "EUR",
+    "base": "KRW",
+    "currency": "EUR",
     "amount": 1000000
   },
   "trigger": {

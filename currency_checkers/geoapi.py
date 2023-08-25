@@ -1,29 +1,40 @@
+from .currency_checker import CurrencyChecker
+from datetime import date
+from typing import List, Optional
 import requests
 
 
-# TODO: generalize the function
-def check_currency_rate(api_key: str,
-                        source_currency: str = 'KRW',
-                        target_currency: str = 'EUR',
-                        **kwargs):
-    target_currency = kwargs.get('target_currency', 'EUR')
+class GeoCurrencyChecker(CurrencyChecker):
+    def __init__(self, api_key: str, base: str, currency: str, **kwargs):
+        super().__init__(base, currency, **kwargs)
 
-    parameters = {
-        'api_key': api_key,
-        'from': source_currency,
-        'to': target_currency,
-        'amount': kwargs.get('amount', 1),
-        'format': 'json'
-    }
+        self._api_key = api_key
 
-    url = 'https://api.getgeoapi.com/v2/currency/convert'
+    def get_exchange_rate(self, date: Optional[date] = None) -> float:
+        parameters = {
+            'api_key': self._api_key,
+            'from': self._base,
+            'to': self._currency,
+            # FIXME: geoapi rounds up the exchange rate with a unit amount
+            'amount': 1,
+            'format': 'json'
+        }
 
-    response = requests.get(url, parameters)
+        base_url = 'https://api.getgeoapi.com/v2/currency'
+        if date:
+            url = f'{base_url}/historical/{date.isoformat()}'
+        else:
+            url = f'{base_url}/convert'
 
-    amount_in_target_currency = float(
-        response.json()['rates'][target_currency]['rate_for_amount'])
+        response = requests.get(url, parameters)
+        response.raise_for_status()
 
-    return amount_in_target_currency
+        rate = float(response.json()['rates'][self._currency]['rate'])
+
+        return rate
+
+    def get_time_series(self, start: date, end: date) -> List[float]:
+        assert False, 'The API is not available!'
 
 
 if __name__ == '__main__':
@@ -34,5 +45,8 @@ if __name__ == '__main__':
 
     args = arg_parser.parse_args()
 
-    rate_for_amount = check_currency_rate(args.api_key)
+    currency_checker = GeoCurrencyChecker(
+        args.api_key, base='EUR', currency='KRW')
+
+    rate_for_amount = currency_checker.get_exchange_rate()
     print(rate_for_amount)

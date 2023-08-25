@@ -3,7 +3,7 @@ from datetime import datetime
 from pathlib import Path
 
 from config_loader.config_loader import load_config
-from currency_checkers.geoapi import check_currency_rate
+from currency_checkers import init_currency_checker
 from triggers.threshold_trigger import threshold_trigger
 from notifiers.telegram_notifier import TelegramNotifier
 
@@ -12,8 +12,8 @@ def generate_message(dst_amount: float,
                      good: bool,
                      currency_setting: dict,
                      trigger_setting: dict):
-    src_curr = currency_setting['from']
-    dst_curr = currency_setting['to']
+    src_curr = currency_setting['base']
+    dst_curr = currency_setting['currency']
     src_amount = currency_setting['amount']
     lines = [
         datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
@@ -29,7 +29,9 @@ async def main():
     config_dir = Path(__file__).parent / 'config'
     config = load_config(config_dir / 'config.json')
 
-    expected_amount = check_currency_rate(**config['currency'])
+    currency_checker = init_currency_checker(**config['currency'])
+    expected_amount = currency_checker.get_exchange_rate() * config['currency']['amount']
+
     good = threshold_trigger(expected_amount, **config['trigger'])
 
     msg = generate_message(expected_amount,
