@@ -10,12 +10,21 @@ class FixerCurrencyChecker(CurrencyChecker):
 
         self._access_key = api_key
 
-    def get_exchange_rate(self, date: Optional[date] = None) -> float:
+    def get_exchange_rate(self,
+                          amount: float = 1,
+                          date: Optional[date] = None) -> float:
         base_url = 'http://data.fixer.io/api'
 
         if date:
             url = f'{base_url}/{date.isoformat()}'
         else:
+            ''' TODO: consider using this API
+            https://data.fixer.io/api/convert
+                ? access_key = API_KEY
+                & from = GBP
+                & to = JPY
+                & amount = 25
+            '''
             url = f'{base_url}/latest'
 
         parameters = {
@@ -29,7 +38,7 @@ class FixerCurrencyChecker(CurrencyChecker):
 
         rate = response.json()['rates'][self._currency]
 
-        return rate
+        return amount * rate
 
     def get_time_series(self, start: date, end: date) -> List[float]:
         url = 'http://data.fixer.io/api/timeseries'

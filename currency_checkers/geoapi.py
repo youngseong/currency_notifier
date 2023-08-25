@@ -10,13 +10,14 @@ class GeoCurrencyChecker(CurrencyChecker):
 
         self._api_key = api_key
 
-    def get_exchange_rate(self, date: Optional[date] = None) -> float:
+    def get_exchange_rate(self,
+                          amount: float = 1,
+                          date: Optional[date] = None) -> float:
         parameters = {
             'api_key': self._api_key,
             'from': self._base,
             'to': self._currency,
-            # FIXME: geoapi rounds up the exchange rate with a unit amount
-            'amount': 1,
+            'amount': amount,
             'format': 'json'
         }
 
@@ -29,7 +30,7 @@ class GeoCurrencyChecker(CurrencyChecker):
         response = requests.get(url, parameters)
         response.raise_for_status()
 
-        rate = float(response.json()['rates'][self._currency]['rate'])
+        rate = float(response.json()['rates'][self._currency]['rate_for_amount'])
 
         return rate
 

@@ -30,7 +30,8 @@ async def main():
     config = load_config(config_dir / 'config.json')
 
     currency_checker = init_currency_checker(**config['currency'])
-    expected_amount = currency_checker.get_exchange_rate() * config['currency']['amount']
+    expected_amount = currency_checker.get_exchange_rate(
+        amount=config['currency']['amount'])
 
     good = threshold_trigger(expected_amount, **config['trigger'])
 
