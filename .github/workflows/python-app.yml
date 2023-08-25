@@ -6,7 +6,7 @@ name: Notify krw2eur rate hourly between 9am and 6pm
 on:
   schedule:
     - cron: "0 8-18/2 * * *"
-
+  workflow_dispatch: {}
 permissions:
   contents: read
 
