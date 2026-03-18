@@ -5,14 +5,13 @@
     "api": "geoapi",
     "api_key": "GEO_API_KEY",
     "base": "KRW",
-    "target": "EUR",
-    "amount": 1000000
-  },
-
-  // When to send a notification
-  "trigger": {
-    "threshold": 730,
-    "comparator": "gt"
+    "amount": 1000000,
+    // Per-target thresholds: notify when the converted amount meets the condition
+    "targets": {
+      "EUR": { "threshold": 730,    "comparator": "gt" },
+      "JPY": { "threshold": 100000, "comparator": "gt" },
+      "USD": { "threshold": 740,    "comparator": "gt" }
+    }
   },
 
   // Where to send the notification
