@@ -8,7 +8,7 @@ def init_currency_checker(api: str, **kwargs) -> CurrencyChecker:
     elif api == 'geoapi':
         from .geoapi import GeoCurrencyChecker
         return GeoCurrencyChecker(**kwargs)
-    raise ValueError
+    raise ValueError(f"Unknown currency API: {api!r}. Supported values: 'fixer', 'geoapi'")
 
 
 __all__ = ['CurrencyChecker', 'init_currency_checker']

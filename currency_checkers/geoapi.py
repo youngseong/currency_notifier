@@ -35,7 +35,7 @@ class GeoCurrencyChecker(CurrencyChecker):
         return rate
 
     def get_time_series(self, start: date, end: date) -> List[float]:
-        assert False, 'The API is not available!'
+        raise NotImplementedError('The GeoAPI time series endpoint is not available')
 
 
 if __name__ == '__main__':

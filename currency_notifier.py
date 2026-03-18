@@ -1,5 +1,5 @@
 import asyncio
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 from config_loader.config_loader import load_config
@@ -16,7 +16,7 @@ def generate_message(dst_amount: float,
     dst_curr = currency_setting['currency']
     src_amount = currency_setting['amount']
     lines = [
-        datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+        datetime.now(timezone.utc).strftime("%d/%m/%Y %H:%M:%S UTC"),
         'Suggestion: ' + ('Exchange' if good else 'Wait'),
         f'From ({src_curr}): {src_amount}',
         f'To ({dst_curr}): {dst_amount}',
@@ -35,13 +35,14 @@ async def main():
 
     good = threshold_trigger(expected_amount, **config['trigger'])
 
-    msg = generate_message(expected_amount,
-                           good,
-                           config['currency'],
-                           config['trigger'])
+    if good:
+        msg = generate_message(expected_amount,
+                               good,
+                               config['currency'],
+                               config['trigger'])
 
-    notifier = TelegramNotifier(**config['notification'])
-    await notifier.notify_all(msg)
+        notifier = TelegramNotifier(**config['notification'])
+        await notifier.notify_all(msg)
 
 
 def lambda_handler(event, context):

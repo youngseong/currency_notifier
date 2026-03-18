@@ -4,9 +4,9 @@ from typing import List
 
 
 class TelegramNotifier(object):
-    def __init__(self, token: str, chat_ids: List[int] = [], **kwargs):
+    def __init__(self, token: str, chat_ids: List[int] = None, **kwargs):
         self._bot = telegram.Bot(token)
-        self._chat_ids = chat_ids
+        self._chat_ids = chat_ids or []
 
     @property
     def chat_ids(self):
