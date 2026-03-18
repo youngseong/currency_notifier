@@ -4,9 +4,9 @@ from typing import List, Optional
 
 
 class CurrencyChecker(ABC):
-    def __init__(self, base: str, currency: str, **kwargs) -> None:
+    def __init__(self, base: str, target: str, **kwargs) -> None:
         self._base = base
-        self._currency = currency
+        self._target = target
 
     @abstractmethod
     def get_exchange_rate(self,

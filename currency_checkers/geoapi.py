@@ -5,8 +5,8 @@ import requests
 
 
 class GeoCurrencyChecker(CurrencyChecker):
-    def __init__(self, api_key: str, base: str, currency: str, **kwargs):
-        super().__init__(base, currency, **kwargs)
+    def __init__(self, api_key: str, base: str, target: str, **kwargs):
+        super().__init__(base, target, **kwargs)
 
         self._api_key = api_key
 
@@ -16,7 +16,7 @@ class GeoCurrencyChecker(CurrencyChecker):
         parameters = {
             'api_key': self._api_key,
             'from': self._base,
-            'to': self._currency,
+            'to': self._target,
             'amount': amount,
             'format': 'json'
         }
@@ -30,7 +30,7 @@ class GeoCurrencyChecker(CurrencyChecker):
         response = requests.get(url, parameters)
         response.raise_for_status()
 
-        rate = float(response.json()['rates'][self._currency]['rate_for_amount'])
+        rate = float(response.json()['rates'][self._target]['rate_for_amount'])
 
         return rate
 

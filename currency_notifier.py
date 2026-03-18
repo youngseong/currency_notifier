@@ -8,19 +8,30 @@ from triggers.threshold_trigger import threshold_trigger
 from notifiers.telegram_notifier import TelegramNotifier
 
 
+_COMPARATOR_SYMBOL = {'gt': '&gt;', '>': '&gt;', 'lt': '&lt;', '<': '&lt;'}
+
+
 def generate_message(dst_amount: float,
-                     good: bool,
                      currency_setting: dict,
-                     trigger_setting: dict):
+                     trigger_setting: dict) -> str:
     src_curr = currency_setting['base']
-    dst_curr = currency_setting['currency']
+    dst_curr = currency_setting['target']
     src_amount = currency_setting['amount']
+    threshold = trigger_setting['threshold']
+    comparator = trigger_setting['comparator']
+    delta = dst_amount - threshold
+
+    timestamp = datetime.now(timezone.utc).strftime("%d/%m/%Y %H:%M UTC")
+    cmp_symbol = _COMPARATOR_SYMBOL[comparator]
+    delta_sign = '+' if delta >= 0 else '-'
+
     lines = [
-        datetime.now(timezone.utc).strftime("%d/%m/%Y %H:%M:%S UTC"),
-        'Suggestion: ' + ('Exchange' if good else 'Wait'),
-        f'From ({src_curr}): {src_amount}',
-        f'To ({dst_curr}): {dst_amount}',
-        f'Trigger: {trigger_setting}'
+        f'<b>Rate Alert</b>  |  {timestamp}',
+        '',
+        f'<b>{src_curr} → {dst_curr}</b>',
+        f'{src_amount:,} {src_curr} = <b>{dst_amount:,.2f} {dst_curr}</b>',
+        '',
+        f'Threshold: {cmp_symbol} {threshold:,.2f} {dst_curr}  ({delta_sign}{abs(delta):,.2f})',
     ]
     return '\n'.join(lines)
 
@@ -37,7 +48,6 @@ async def main():
 
     if good:
         msg = generate_message(expected_amount,
-                               good,
                                config['currency'],
                                config['trigger'])
 

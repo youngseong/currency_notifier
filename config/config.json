@@ -1,19 +1,24 @@
 {
+  // Exchange rate source
+  // api_key: name of the environment variable that holds the actual API key
   "currency": {
     "api": "geoapi",
     "api_key": "GEO_API_KEY",
     "base": "KRW",
-    "currency": "EUR",
+    "target": "EUR",
     "amount": 1000000
   },
+
+  // When to send a notification
   "trigger": {
-    "method": "threshold",
     "threshold": 730,
     "comparator": "gt"
   },
+
+  // Where to send the notification
+  // token: name of the environment variable that holds the Telegram bot token
   "notification": {
-    "messenger": "telegram",
     "token": "TELEGRAM_BOT_TOKEN",
-    "chat_ids": [6144059945, 6023918749] // is this the right place?
+    "chat_ids": [6144059945, 6023918749]
   }
 }

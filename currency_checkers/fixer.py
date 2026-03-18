@@ -5,8 +5,8 @@ from typing import List, Optional
 
 
 class FixerCurrencyChecker(CurrencyChecker):
-    def __init__(self, api_key: str, base: str, currency: str, **kwargs):
-        super().__init__(base, currency, **kwargs)
+    def __init__(self, api_key: str, base: str, target: str, **kwargs):
+        super().__init__(base, target, **kwargs)
 
         self._access_key = api_key
 
@@ -30,13 +30,13 @@ class FixerCurrencyChecker(CurrencyChecker):
         parameters = {
             'access_key': self._access_key,
             'base': self._base,
-            'symbols': self._currency
+            'symbols': self._target
         }
 
         response = requests.get(url, parameters)
         response.raise_for_status()
 
-        rate = response.json()['rates'][self._currency]
+        rate = response.json()['rates'][self._target]
 
         return amount * rate
 

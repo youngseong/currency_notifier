@@ -1,5 +1,6 @@
 import asyncio
 import telegram
+from telegram.constants import ParseMode
 from typing import List
 
 
@@ -29,7 +30,7 @@ class TelegramNotifier(object):
             *[self.send_message(id, text) for id in self._chat_ids])
 
     async def send_message(self, chat_id: int, text: str):
-        await self._bot.send_message(text=text, chat_id=chat_id)
+        await self._bot.send_message(text=text, chat_id=chat_id, parse_mode=ParseMode.HTML)
 
 
 async def main(token: str):
