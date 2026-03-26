@@ -5,15 +5,15 @@ from typing import List, Optional
 
 
 class FixerCurrencyChecker(CurrencyChecker):
-    def __init__(self, api_key: str, base: str, currency: str, **kwargs):
-        super().__init__(base, currency, **kwargs)
+    def __init__(self, api_key: str, base: str, target: str, **kwargs):
+        super().__init__(base, target, **kwargs)
 
         self._access_key = api_key
 
     def get_exchange_rate(self,
                           amount: float = 1,
                           date: Optional[date] = None) -> float:
-        base_url = 'http://data.fixer.io/api'
+        base_url = 'https://data.fixer.io/api'
 
         if date:
             url = f'{base_url}/{date.isoformat()}'
@@ -30,29 +30,17 @@ class FixerCurrencyChecker(CurrencyChecker):
         parameters = {
             'access_key': self._access_key,
             'base': self._base,
-            'symbols': self._currency
+            'symbols': self._target
         }
 
         response = requests.get(url, parameters)
         response.raise_for_status()
 
-        rate = response.json()['rates'][self._currency]
+        rate = response.json()['rates'][self._target]
 
         return amount * rate
 
     def get_time_series(self, start: date, end: date) -> List[float]:
-        url = 'http://data.fixer.io/api/timeseries'
-
-        parameters = {
-            'access_key': self._access_key,
-            'start_date': start.isoformat(),
-            'end_date': end.isoformat(),
-            'base': self._base,
-            'symbols': self._currency
-        }
-        response = requests.get(url, parameters)
-        response.raise_for_status()
-
         raise NotImplementedError
 
 
