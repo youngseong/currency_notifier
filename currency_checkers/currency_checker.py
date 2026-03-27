@@ -9,9 +9,9 @@ class CurrencyChecker(ABC):
         self._target = target
 
     @abstractmethod
-    def get_exchange_rate(self,
-                          amount: float = 1,
-                          date: Optional[date] = None) -> float:
+    def get_exchange_rate(
+        self, amount: float = 1, date: Optional[date] = None
+    ) -> float:
         raise NotImplementedError
 
     @abstractmethod

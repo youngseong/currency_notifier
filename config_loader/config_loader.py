@@ -25,17 +25,18 @@ def load_config(config_path: Path, replace_secrets_with_env: bool = True):
                         env_val = os.environ.get(v)
                         if env_val is None:
                             raise EnvironmentError(
-                                f"Required environment variable '{v}' is not set")
+                                f"Required environment variable '{v}' is not set"
+                            )
                         table[k] = env_val
                         break
 
     if replace_secrets_with_env:
-        replace_secrets(config, ['api_key', 'token'])
+        replace_secrets(config, ["api_key", "token"])
 
     return config
 
 
-if __name__ == '__main__':
-    config_dir = Path(__file__).parent.parent / 'config'
-    cfg = load_config(config_dir / 'config.json')
+if __name__ == "__main__":
+    config_dir = Path(__file__).parent.parent / "config"
+    cfg = load_config(config_dir / "config.json")
     print(cfg)

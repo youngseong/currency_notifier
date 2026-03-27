@@ -10,33 +10,33 @@ class FixerCurrencyChecker(CurrencyChecker):
 
         self._access_key = api_key
 
-    def get_exchange_rate(self,
-                          amount: float = 1,
-                          date: Optional[date] = None) -> float:
-        base_url = 'https://data.fixer.io/api'
+    def get_exchange_rate(
+        self, amount: float = 1, date: Optional[date] = None
+    ) -> float:
+        base_url = "https://data.fixer.io/api"
 
         if date:
-            url = f'{base_url}/{date.isoformat()}'
+            url = f"{base_url}/{date.isoformat()}"
         else:
-            ''' TODO: consider using this API
+            """ TODO: consider using this API
             https://data.fixer.io/api/convert
                 ? access_key = API_KEY
                 & from = GBP
                 & to = JPY
                 & amount = 25
-            '''
-            url = f'{base_url}/latest'
+            """
+            url = f"{base_url}/latest"
 
         parameters = {
-            'access_key': self._access_key,
-            'base': self._base,
-            'symbols': self._target
+            "access_key": self._access_key,
+            "base": self._base,
+            "symbols": self._target,
         }
 
         response = requests.get(url, parameters)
         response.raise_for_status()
 
-        rate = response.json()['rates'][self._target]
+        rate = response.json()["rates"][self._target]
 
         return amount * rate
 
@@ -44,7 +44,7 @@ class FixerCurrencyChecker(CurrencyChecker):
         raise NotImplementedError
 
 
-'''
+"""
 time series response e.g.
 {
     "success": true,
@@ -71,4 +71,4 @@ time series response e.g.
         [...]
     }
 }
-'''
+"""
