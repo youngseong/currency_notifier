@@ -1,11 +1,13 @@
 import asyncio
+import os
+
 import telegram
+from dotenv import load_dotenv
 from telegram.constants import ParseMode
-from typing import List
 
 
 class TelegramNotifier(object):
-    def __init__(self, token: str, chat_ids: List[int] = None, **kwargs):
+    def __init__(self, token: str, chat_ids: list[int] = None, **kwargs):
         self._bot = telegram.Bot(token)
         self._chat_ids = chat_ids or []
 
@@ -18,19 +20,19 @@ class TelegramNotifier(object):
 
     async def __list_chat_ids(self):
         updates = await self._bot.get_updates()
-        chat_ids = list(set(
-            [u.effective_user.id for u in updates if u.effective_user]))
+        chat_ids = list(set([u.effective_user.id for u in updates if u.effective_user]))
         return chat_ids
 
     async def notify_all(self, text: str):
         if not self._chat_ids:
             await self.update_chat_ids()
 
-        await asyncio.gather(
-            *[self.send_message(id, text) for id in self._chat_ids])
+        await asyncio.gather(*[self.send_message(id, text) for id in self._chat_ids])
 
     async def send_message(self, chat_id: int, text: str):
-        await self._bot.send_message(text=text, chat_id=chat_id, parse_mode=ParseMode.HTML)
+        await self._bot.send_message(
+            text=text, chat_id=chat_id, parse_mode=ParseMode.HTML
+        )
 
 
 async def main(token: str):
@@ -39,15 +41,10 @@ async def main(token: str):
     await notifier.update_chat_ids()
     print(notifier.chat_ids)
 
-    await notifier.send_message(notifier.chat_ids[0], 'Hello world!')
+    await notifier.send_message(notifier.chat_ids[0], "Hello world!")
 
 
-if __name__ == '__main__':
-    from argparse import ArgumentParser
+if __name__ == "__main__":
+    load_dotenv()
 
-    arg_parser = ArgumentParser()
-    arg_parser.add_argument('token', type=str)
-
-    args = arg_parser.parse_args()
-
-    asyncio.run(main(args.token))
+    asyncio.run(main(os.getenv("TELEGRAM_BOT_TOKEN")))
